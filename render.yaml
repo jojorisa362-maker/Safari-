@@ -1,0 +1,24 @@
+# Render Blueprint:  Dashboard -> New -> Blueprint -> pick this repo -> Apply
+services:
+  - type: web
+    name: safari-rescue
+    runtime: node
+    plan: free
+    region: frankfurt            # closest Render region to East Africa
+    buildCommand: npm install --omit=dev
+    startCommand: npm start
+    healthCheckPath: /api/health
+    autoDeploy: true
+    envVars:
+      - key: NODE_VERSION
+        value: "22"
+      - key: NODE_ENV
+        value: production
+      - key: SESSION_SECRET
+        generateValue: true
+      - key: ADMIN_TOKEN
+        generateValue: true      # your /admin password: copy it from Environment after deploy
+      - key: DEMO_MODE
+        value: "1"               # set to "0" before real customers use the app
+      # Add DATABASE_URL in the dashboard (Environment tab) so data survives restarts:
+      #   a free Postgres from Neon or Supabase, or a Render Postgres. See README.

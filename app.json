@@ -1,0 +1,14 @@
+{
+  "name": "Safari Rescue",
+  "description": "Roadside assistance, rescue mobility and car hire for Uganda",
+  "keywords": ["node", "uganda", "roadside-assistance"],
+  "buildpacks": [{ "url": "heroku/nodejs" }],
+  "env": {
+    "NODE_ENV": { "value": "production" },
+    "SESSION_SECRET": { "generator": "secret" },
+    "DEMO_MODE": { "value": "1", "description": "1 = show the demo buttons. Set to 0 before real customers use the app." },
+    "ADMIN_TOKEN": { "generator": "secret", "description": "Password for /admin (approve rescuers, watch live SOS)" }
+  },
+  "addons": [{ "plan": "heroku-postgresql:essential-0" }],
+  "formation": { "web": { "quantity": 1, "size": "eco" } }
+}

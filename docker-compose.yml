@@ -1,0 +1,31 @@
+# VPS quick start:
+#   cp .env.example .env   (edit it)
+#   docker compose up -d --build                       # app only, JSON file storage in a volume
+#   docker compose --profile postgres up -d --build    # app + local Postgres (set DATABASE_URL, see .env.example)
+services:
+  app:
+    build: .
+    restart: unless-stopped
+    ports:
+      - "3000:3000"
+    env_file: .env
+    environment:
+      PORT: "3000"
+      DATA_DIR: /data
+    volumes:
+      - sr-data:/data
+
+  db:
+    image: postgres:16-alpine
+    profiles: ["postgres"]
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: safari
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-change-me}
+      POSTGRES_DB: safari
+    volumes:
+      - pg-data:/var/lib/postgresql/data
+
+volumes:
+  sr-data:
+  pg-data:
